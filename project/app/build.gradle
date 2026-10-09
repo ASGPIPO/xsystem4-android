@@ -12,10 +12,11 @@ android {
     if (buildAsApplication) {
         namespace "io.github.kichikuou.xsystem4"
     }
-    compileSdkVersion 34
+    compileSdkVersion 35
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 34
+        buildToolsVersion "36.0.0"
+        targetSdkVersion 35
         // So that stripReleaseDebugSymbols task works
         ndkPath System.getenv("ANDROID_NDK_HOME")
         versionCode 2
