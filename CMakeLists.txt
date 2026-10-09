@@ -7,6 +7,8 @@ endif()
 
 project(xsystem4-android)
 
+option(RANCE03_SKIP_MOVIES "Skip unavailable movies in Rance03 trial builds" OFF)
+
 include(ExternalProject)
 
 set(stagingDir ${CMAKE_CURRENT_BINARY_DIR}/stage)
@@ -134,6 +136,7 @@ ExternalProject_Add(
   xsystem4
   SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/xsystem4
   CMAKE_ARGS ${COMMON_CMAKE_ARGS}
+             -DRANCE03_SKIP_MOVIES=${RANCE03_SKIP_MOVIES}
              -DCMAKE_MODULE_PATH=${CMAKE_CURRENT_LIST_DIR}/cmake
   BUILD_ALWAYS YES
 )
