@@ -1,0 +1,12 @@
+{
+  "build_kind": "Rance03 trial preview; missing HLL can block later gameplay",
+  "version_code": 3,
+  "version_name": "Rance03-preview20261009",
+  "abi": [
+    "arm64-v8a"
+  ],
+  "engine_commit": "95eaeb7d690770474b76eacfb176a312aa91b844",
+  "engine_base_commit": "9a74c8f104ecd5ee7d9f8ffb848162e85d992f25",
+  "libsys4_commit": "e5f28ab555ac8312f8abae6cbcc0b783e52c87f2",
+  "commercial_game_data_included": false
+}
