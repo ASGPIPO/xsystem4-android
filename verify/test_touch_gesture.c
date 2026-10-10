@@ -144,12 +144,12 @@ static void test_two_finger_swipe_down_wheel(void)
 	feed(30, 1, 0.3f, 0.4f, 0);
 	feed(30, 2, 0.7f, 0.3f, 0);
 	o = frame(40);
-	assert(o.wheel == -1 && "swipe down emits wheel backward (backlog)");
+	assert(o.wheel == 1 && "swipe down emits positive wheel (backlog)");
 	// further movement crosses another step (0.40+0.30)/2=0.35 -> 0.42
 	feed(50, 1, 0.3f, 0.54f, 0);
 	feed(50, 2, 0.7f, 0.3f, 0);
 	o = frame(60);
-	assert(o.wheel == -1 && "one wheel step per 2% of height");
+	assert(o.wheel == 1 && "one wheel step per 2% of height");
 	feed(70, 1, 0.3f, 0.54f, -1);
 	feed(80, 2, 0.7f, 0.3f, -1);
 	o = frame(90);
