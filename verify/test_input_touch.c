@@ -10,6 +10,12 @@
  * mouse_get_pos() override, and the gesture-owner/physical-input
  * coexistence rules.
  *
+ * The R1/R3 scenarios pin the tap-pulse contract on top: the press
+ * frame must report the tap's game coordinates (not the
+ * SDL-synthesized mouse position, which is parked at a known spot via
+ * the dummy video driver), and rapid taps delivered in one event
+ * batch must come out as distinct press edges, never merged.
+ *
  * Time-based transitions (350 ms long-press) use the real clock; each
  * such scenario is bounded by a generous timeout and fails hard if the
  * transition does not fire.
@@ -146,8 +152,18 @@ static void setup_geometry(int win_w, int win_h, int vx, int vy, int vw, int vh,
 
 int main(void)
 {
-	if (SDL_Init(SDL_INIT_EVENTS | SDL_INIT_TIMER) < 0) {
+	// Real SDL mouse state (R1): the dummy video driver gives us a
+	// window and SDL_WarpMouseInWindow() with no display server, so
+	// the SDL-synthesized mouse position can be parked at a known
+	// spot while the gesture engine publishes a tap.
+	SDL_SetHint("SDL_VIDEODRIVER", "dummy");
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) < 0) {
 		fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
+		return 1;
+	}
+	sdl.window = SDL_CreateWindow("test_input_touch", 0, 0, 1600, 1200, 0);
+	if (!sdl.window) {
+		fprintf(stderr, "dummy window failed: %s\n", SDL_GetError());
 		return 1;
 	}
 	SDL_PumpEvents();
@@ -164,6 +180,75 @@ int main(void)
 	CHECK(peak_lb, "tap -> VK_LBUTTON pulse seen");
 	CHECK(key_is(false, false, false), "tap pulse released after one pump");
 	CHECK(touch_gesture_get_state() == TG_IDLE, "tap ends in TG_IDLE");
+
+	// -- 1b. tap pulse frame must carry the tap coordinates (R1) ------
+	// Park the SDL-synthesized mouse far away; the game must see the
+	// tap position on the very frame key_state[VK_LBUTTON] turns
+	// true, or the script-side hit-test runs at the wrong spot.
+	SDL_WarpMouseInWindow(sdl.window, 999, 999);
+	pump(4); // drain the warp motion event
+	int mx, my;
+	SDL_GetMouseState(&mx, &my);
+	CHECK(mx == 999 && my == 999, "SDL mouse parked at (999,999)");
+	reset_peaks();
+	// window (348,496) -> viewport (160,120,1280,960) -> game (150,300)
+	const float tap_x = 348.0f / 1600.0f, tap_y = 496.0f / 1200.0f;
+	push_finger(SDL_FINGERDOWN, 12, tap_x, tap_y);
+	SDL_Event tap_up = {0};
+	tap_up.type = SDL_FINGERUP;
+	tap_up.tfinger.touchId = 1;
+	tap_up.tfinger.fingerId = 12;
+	tap_up.tfinger.x = tap_x;
+	tap_up.tfinger.y = tap_y;
+	SDL_PushEvent(&tap_up);
+	bool saw_press = false, press_pos_ok = false;
+	int press_frames = 0;
+	for (int i = 0; i < 8; i++) {
+		handle_events();
+		if (key_state[VK_LBUTTON]) {
+			press_frames++;
+			saw_press = true;
+			int px, py;
+			mouse_get_pos(&px, &py);
+			if (px == 150 && py == 300)
+				press_pos_ok = true;
+		}
+	}
+	CHECK(saw_press, "R1 tap press observed");
+	CHECK(press_frames == 1, "R1 tap press visible exactly one frame");
+	CHECK(press_pos_ok, "R1 pulse frame mouse_get_pos == tap game coords (150,300)");
+	CHECK(key_is(false, false, false), "R1 keys idle after tap");
+	CHECK(touch_gesture_get_state() == TG_IDLE, "R1 tap ends in TG_IDLE");
+
+	// -- 1c. rapid taps are never merged or lost (R3) ------------------
+	// Power-save pacing means one frame can carry a whole batch:
+	// tap1's up plus tap2's down AND up in the same event queue.
+	// The game must still observe two distinct press edges.
+	reset_peaks();
+	push_finger(SDL_FINGERDOWN, 13, tap_x, tap_y);
+	SDL_Event batch = {0};
+	batch.type = SDL_FINGERUP;
+	batch.tfinger.touchId = 1;
+	batch.tfinger.fingerId = 13;
+	batch.tfinger.x = tap_x;
+	batch.tfinger.y = tap_y;
+	SDL_PushEvent(&batch);
+	batch.type = SDL_FINGERDOWN;
+	batch.tfinger.fingerId = 14;
+	SDL_PushEvent(&batch);
+	batch.type = SDL_FINGERUP;
+	SDL_PushEvent(&batch);
+	int press_edges = 0;
+	bool prev_lb = false;
+	for (int i = 0; i < 10; i++) {
+		handle_events();
+		if (key_state[VK_LBUTTON] && !prev_lb)
+			press_edges++;
+		prev_lb = key_state[VK_LBUTTON];
+	}
+	CHECK(press_edges == 2, "R3 rapid taps in one batch: two press edges, none lost");
+	CHECK(key_is(false, false, false), "R3 rapid taps: keys released after both pulses");
+	CHECK(touch_gesture_get_state() == TG_IDLE, "R3 rapid taps end in TG_IDLE");
 
 	// -- 2. long-press: VK_RBUTTON held at the ORIGINAL position -------
 	reset_peaks();
