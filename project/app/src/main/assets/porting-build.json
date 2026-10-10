@@ -1,12 +1,12 @@
 {
-  "build_kind": "Rance03 trial preview; missing HLL can block later gameplay",
-  "version_code": 4,
-  "version_name": "Rance03-preview20261009-skipmovie",
+  "build_kind": "Rance03 core-fix trial preview; later HLL gaps remain",
+  "version_code": 5,
+  "version_name": "Rance03-preview20261010-corefix",
   "abi": [
     "arm64-v8a"
   ],
-  "engine_commit": "796513ec84aaaec9fdf69efd1e2eb72232856115",
-  "engine_base_commit": "9a74c8f104ecd5ee7d9f8ffb848162e85d992f25",
+  "engine_commit": "cf183ee248fcad2e16b152ff4b39f81d716f129e",
+  "engine_base_commit": "796513ec84aaaec9fdf69efd1e2eb72232856115",
   "libsys4_commit": "e5f28ab555ac8312f8abae6cbcc0b783e52c87f2",
   "commercial_game_data_included": false,
   "preview_compile_flags": {
