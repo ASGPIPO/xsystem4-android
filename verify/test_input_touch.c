@@ -68,14 +68,19 @@ static int failures;
 	else { printf("FAIL %s (line %d)\n", msg, __LINE__); failures++; } \
 } while (0)
 
-// Pump n frames, recording the peak key state seen between pumps (tap
-// pulses live for exactly one pump).
+// Pump n logical frames, recording peak key state between frames.
+static void pump_input_frame(void)
+{
+	input_begin_frame(INPUT_FRAME_SACT);
+	handle_events();
+}
+
 static bool peak_lb, peak_rb, peak_ct;
 static void reset_peaks(void) { peak_lb = peak_rb = peak_ct = false; }
 static void pump(int n)
 {
 	for (int i = 0; i < n; i++) {
-		handle_events();
+		pump_input_frame();
 		if (key_state[VK_LBUTTON])
 			peak_lb = true;
 		if (key_state[VK_RBUTTON])
@@ -103,7 +108,7 @@ static bool wait_until(bool (*cond)(void), Uint32 timeout_ms, const char *what)
 {
 	Uint32 t0 = SDL_GetTicks();
 	while (SDL_GetTicks() - t0 < timeout_ms) {
-		handle_events();
+		pump_input_frame();
 		if (cond())
 			return true;
 		SDL_Delay(5);
@@ -204,7 +209,7 @@ int main(void)
 	bool saw_press = false, press_pos_ok = false;
 	int press_frames = 0;
 	for (int i = 0; i < 8; i++) {
-		handle_events();
+		pump_input_frame();
 		if (key_state[VK_LBUTTON]) {
 			press_frames++;
 			saw_press = true;
@@ -241,7 +246,7 @@ int main(void)
 	int press_edges = 0;
 	bool prev_lb = false;
 	for (int i = 0; i < 10; i++) {
-		handle_events();
+		pump_input_frame();
 		if (key_state[VK_LBUTTON] && !prev_lb)
 			press_edges++;
 		prev_lb = key_state[VK_LBUTTON];
@@ -284,7 +289,7 @@ int main(void)
 	pump(8);
 	CHECK(key_is(false, false, false), "drag release clears VK_LBUTTON");
 
-	// -- 4. two-finger swipe down -> wheel backward ---------------------
+	// -- 4. two-finger swipe down -> positive wheel ---------------------
 	reset_peaks();
 	mouse_clear_wheel();
 	push_finger(SDL_FINGERDOWN, 4, 0.50f, 0.30f);
@@ -294,7 +299,7 @@ int main(void)
 	push_finger(SDL_FINGERMOTION, 5, 0.60f, 0.40f);
 	int fwd, back;
 	mouse_get_wheel(&fwd, &back);
-	CHECK(back && !fwd, "two-finger swipe down -> wheel backward (backlog)");
+	CHECK(fwd && !back, "two-finger swipe down -> positive wheel (backlog)");
 	push_finger(SDL_FINGERUP, 4, 0.50f, 0.40f);
 	push_finger(SDL_FINGERUP, 5, 0.60f, 0.40f);
 	pump(8);
@@ -332,7 +337,7 @@ int main(void)
 	pump(8);
 	CHECK(key_state[VK_CONTROL], "physical Ctrl press survives idle gesture layer");
 	for (int i = 0; i < 20; i++)
-		handle_events();
+		pump_input_frame();
 	CHECK(key_state[VK_CONTROL], "physical Ctrl stays down across frames (idle gesture layer)");
 	k.type = SDL_KEYUP;
 	SDL_PushEvent(&k);
