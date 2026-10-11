@@ -299,16 +299,24 @@ class GameList(activity: Activity) {
             if (item.error != null) continue
             val oldPath = File(item.homedir, item.name)
             val files = oldPath.listFiles() ?: continue
+            try {
+                if (oldPath.canonicalFile == item.path.canonicalFile) continue
+            } catch (e: IOException) {
+                Log.w("GameList", "Failed to resolve save directory paths: ${oldPath} -> ${item.path}", e)
+                continue
+            }
             for (file in files) {
                 val newPath = File(item.path, file.name)
-                Log.i("GameList", "Moving save directory: ${file} -> ${newPath}")
                 if (newPath.exists()) {
-                    Log.w("GameList", "Removing existing save directory: ${newPath}")
-                    newPath.deleteRecursively()
+                    Log.w("GameList", "Keeping existing and legacy save directories: ${file} -> ${newPath}")
+                    continue
                 }
-                file.renameTo(newPath)
+                Log.i("GameList", "Moving save directory: ${file} -> ${newPath}")
+                if (!file.renameTo(newPath)) {
+                    Log.w("GameList", "Failed to move save directory: ${file} -> ${newPath}")
+                }
             }
-            oldPath.deleteRecursively()
+            oldPath.delete()
         }
     }
 }
