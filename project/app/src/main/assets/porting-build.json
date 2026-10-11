@@ -1,11 +1,11 @@
 {
-  "build_kind": "Rance03 gameplay governor and logging fixes preview; settings UI remains failed and later HLL gaps remain",
+  "build_kind": "Rance03 gameplay governor and logging fixes preview; original settings/history HLL gaps remain",
   "version_code": 7,
   "version_name": "Rance03-preview20261011-gameplayfix-v7",
   "abi": [
     "arm64-v8a"
   ],
-  "engine_commit": "0bab3294eeb18ff942b78d8844842c2d7d18ac53",
+  "engine_commit": "d528aeb8d222598e86238c7b049e35a3bbf8d725",
   "engine_base_commit": "d854d3446ee18a91b21721a0f4e6453f993b96e7",
   "libsys4_commit": "e5f28ab555ac8312f8abae6cbcc0b783e52c87f2",
   "commercial_game_data_included": false,
