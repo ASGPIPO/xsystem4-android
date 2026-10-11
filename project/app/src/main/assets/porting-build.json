@@ -1,12 +1,12 @@
 {
-  "build_kind": "Rance03 touch sampling fix trial preview; later HLL gaps remain",
-  "version_code": 6,
-  "version_name": "Rance03-preview20261010-touchfix-v6",
+  "build_kind": "Rance03 gameplay governor and logging fixes preview; settings UI remains failed and later HLL gaps remain",
+  "version_code": 7,
+  "version_name": "Rance03-preview20261011-gameplayfix-v7",
   "abi": [
     "arm64-v8a"
   ],
-  "engine_commit": "d854d3446ee18a91b21721a0f4e6453f993b96e7",
-  "engine_base_commit": "cf183ee248fcad2e16b152ff4b39f81d716f129e",
+  "engine_commit": "0bab3294eeb18ff942b78d8844842c2d7d18ac53",
+  "engine_base_commit": "d854d3446ee18a91b21721a0f4e6453f993b96e7",
   "libsys4_commit": "e5f28ab555ac8312f8abae6cbcc0b783e52c87f2",
   "commercial_game_data_included": false,
   "preview_compile_flags": {
