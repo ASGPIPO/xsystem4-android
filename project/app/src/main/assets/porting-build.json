@@ -1,12 +1,12 @@
 {
-  "build_kind": "Rance03 gameplay governor and logging fixes preview; original settings/history HLL gaps remain",
-  "version_code": 7,
-  "version_name": "Rance03-preview20261011-gameplayfix-v7",
+  "build_kind": "Rance03 reviewed card rotation and legacy numeral recovery preview",
+  "version_code": 8,
+  "version_name": "Rance03-preview20261013-gameplayfix-v8",
   "abi": [
     "arm64-v8a"
   ],
-  "engine_commit": "d528aeb8d222598e86238c7b049e35a3bbf8d725",
-  "engine_base_commit": "d854d3446ee18a91b21721a0f4e6453f993b96e7",
+  "engine_commit": "2a1b616cfc22d11621d7c5f0fa387705c9e41fd2",
+  "engine_base_commit": "d528aeb8d222598e86238c7b049e35a3bbf8d725",
   "libsys4_commit": "e5f28ab555ac8312f8abae6cbcc0b783e52c87f2",
   "commercial_game_data_included": false,
   "preview_compile_flags": {
