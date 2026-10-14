@@ -1,13 +1,15 @@
 {
-  "build_kind": "Rance03 reviewed card rotation and legacy numeral recovery preview",
-  "version_code": 8,
-  "version_name": "Rance03-preview20261013-gameplayfix-v8",
+  "build_kind": "Rance03 preview 8.2",
+  "version_code": 10,
+  "version_name": "Rance03-preview-v8.2",
   "abi": [
     "arm64-v8a"
   ],
-  "engine_commit": "2a1b616cfc22d11621d7c5f0fa387705c9e41fd2",
-  "engine_base_commit": "d528aeb8d222598e86238c7b049e35a3bbf8d725",
-  "libsys4_commit": "e5f28ab555ac8312f8abae6cbcc0b783e52c87f2",
+  "engine_commit": "b766349f9e8874fec99ed59d64792b20bd2ba94e",
+  "engine_integration_commit": "2a9c5f8c6dac527e1e38208c5180854bbb083f28",
+  "engine_base_commit": "721fd9f94b024b7d1cf7bcda82b4796974254609",
+  "libsys4_commit": "3e9ff92674294a43485d39073206d5d615d70a2c",
+  "wrapper_base_commit": "4b723e327c53c5014da72fd9d8a0162ae659c36b",
   "commercial_game_data_included": false,
   "preview_compile_flags": {
     "RANCE03_SKIP_MOVIES": true
