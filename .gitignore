@@ -7,3 +7,10 @@
 /project/local.properties
 .gradle
 .idea
+
+/project/build/
+/verify/*.o
+/verify/test_governor_metrics
+/verify/test_input_touch
+/verify/test_touch_gesture
+/verify/governor_metrics.json
