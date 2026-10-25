@@ -10,6 +10,46 @@ Supported environments:
 See the [game compatibility table](https://github.com/nunuhara/xsystem4/blob/master/game_compatibility.md)
 for a list of games that can be played on xsystem4-android.
 
+## Fork status
+This is a source-only fork of
+[kichikuou/xsystem4-android](https://github.com/kichikuou/xsystem4-android).
+The upstream project name, history and licenses are retained. The
+`preview-8.3` branch is the previous stable source checkpoint;
+`preview-8.4` is a candidate. No APK, signing key, commercial game files
+or saves are included. The download links below refer to upstream releases.
+
+The 8.3 source checkpoints used for the tested local APK were wrapper
+`0a01873bb96431e7190f24f9a76af997ba63ab50`, engine
+`0f016a9c1a686b0eb059b548732cd80cc9b699bc` and libsys4
+`3e9ff92674294a43485d39073206d5d615d70a2c`. Publication removes local
+verification outputs and operational notes from the wrapper history,
+reduces build metadata and updates documentation and submodule links.
+The published wrapper commit therefore differs from the APK source pin.
+Its engine submodule has the same production source as the engine
+checkpoint above, with fork documentation and dependency URLs added.
+
+Native checks and selected ordinary game UI checks passed in a VM.
+Physical Android devices, audible hardware output and long sessions
+remain untested. Movies are skipped, and male/female voice mixers 6/7
+remain incomplete.
+
+For this preview, use JDK 17, Android SDK platform 35, build-tools 36.0.0,
+Android NDK r28c (28.2.13676358), CMake 3.22.1 and Ninja. Clone this fork
+recursively and build
+the tested arm64 configuration with:
+
+```sh
+git clone --recursive --branch preview-8.3 https://github.com/ASGPIPO/xsystem4-android.git
+cd xsystem4-android
+ABI_NAMES=arm64-v8a RANCE03_SKIP_MOVIES=ON ./build-shared-libs.sh
+cd project
+./gradlew assembleDebug
+```
+
+Set `ANDROID_SDK_ROOT` and `ANDROID_NDK_HOME` as described below.
+This builds a new debug-signed APK; the original signing key is not
+published. Tests that use game fixtures need a separately supplied copy.
+
 ## Downloading
 You can get the app in one of two ways:
 
