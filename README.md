@@ -15,31 +15,30 @@ This is a source-only fork of
 [kichikuou/xsystem4-android](https://github.com/kichikuou/xsystem4-android).
 The upstream project name, history and licenses are retained. The
 `preview-8.3` branch is the previous stable source checkpoint;
-`preview-8.4` is a candidate. No APK, signing key, commercial game files
+`preview-8.4.1` is a candidate. No APK, signing key, commercial game files
 or saves are included. The download links below refer to upstream releases.
 
-The 8.4 source checkpoints used for the tested local APK were wrapper
-`91a4255362613e62ffdd328ae2fb36a76d285ea9`, engine
-`c586a4aa665ed790d7fed07d874b66750bda5505` and libsys4
+The 8.4.1 source checkpoints are wrapper
+`7a14bd666991154c983f2e91571f949eeaba5738`, engine
+`6c5748661f1d8ff280ba9df38c21fa4d0faabc31` and libsys4
 `3e9ff92674294a43485d39073206d5d615d70a2c`. Publication removes local
 verification outputs and operational notes from the wrapper history,
 reduces build metadata and updates documentation and submodule links.
-The published wrapper commit therefore differs from the APK source pin.
+The published wrapper commit therefore differs from the frozen build source.
 Its engine submodule has the same production source as the engine
 checkpoint above, with fork documentation and dependency URLs added.
 
 Native checks and ordinary backlog/settings UI checks passed in a VM.
 Physical Android devices, audible hardware output and long sessions
-remain untested. Movies are skipped, and male/female voice mixers 6/7
-remain incomplete.
+remain untested. Movies are skipped. Preview 8.4.1 adds male/female voice
+mixer controls, checked with VM native and settings UI tests.
 
 For this preview, use JDK 17, Android SDK platform 35, build-tools 36.0.0,
 Android NDK r28c (28.2.13676358), CMake 3.22.1 and Ninja. Clone this fork
-recursively and build
-the tested arm64 configuration with:
+recursively and build the arm64 configuration with:
 
 ```sh
-git clone --recursive --branch preview-8.4 https://github.com/ASGPIPO/xsystem4-android.git
+git clone --recursive --branch preview-8.4.1 https://github.com/ASGPIPO/xsystem4-android.git
 cd xsystem4-android
 ABI_NAMES=arm64-v8a RANCE03_SKIP_MOVIES=ON ./build-shared-libs.sh
 cd project
