@@ -1,15 +1,15 @@
 {
-  "build_kind": "Rance03 preview 8.4.1",
-  "version_code": 13,
-  "version_name": "Rance03-preview-v8.4.1",
+  "build_kind": "Rance03 preview 8.4.2 mapfix",
+  "version_code": 14,
+  "version_name": "Rance03-preview-v8.4.2-mapfix",
   "abi": [
     "arm64-v8a"
   ],
-  "engine_commit": "6c5748661f1d8ff280ba9df38c21fa4d0faabc31",
-  "engine_integration_commit": "6c5748661f1d8ff280ba9df38c21fa4d0faabc31",
-  "engine_base_commit": "c586a4aa665ed790d7fed07d874b66750bda5505",
+  "engine_commit": "e82efb745da6ca44451c7ec46a00f0d66e581edb",
+  "engine_integration_commit": "e82efb745da6ca44451c7ec46a00f0d66e581edb",
+  "engine_base_commit": "6c5748661f1d8ff280ba9df38c21fa4d0faabc31",
   "libsys4_commit": "3e9ff92674294a43485d39073206d5d615d70a2c",
-  "wrapper_base_commit": "91a4255362613e62ffdd328ae2fb36a76d285ea9",
+  "wrapper_base_commit": "7a14bd666991154c983f2e91571f949eeaba5738",
   "commercial_game_data_included": false,
   "preview_compile_flags": {
     "RANCE03_SKIP_MOVIES": true
